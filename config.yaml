@@ -117,6 +117,8 @@ char_corrections:
 
 
 gemini:
-  api_key: " "  # Gemini API key
+  # Keep API keys in .env:
+  # GEMINI_API_KEY=your_key
+  # GEMINI_API_KEYS=key1,key2,key3
   model: "gemini-3-flash-preview"
   min_contour_area: 50     # pixels — skip solve if canvas has fewer lit pixels

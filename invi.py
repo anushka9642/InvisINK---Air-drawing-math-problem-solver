@@ -110,11 +110,27 @@ _gemini_cfg = CFG.get("gemini", {})
 from dotenv import load_dotenv
 load_dotenv()
 
-_API_KEYS: list[str] = [
-    k.strip() for k in
-    os.environ.get("GEMINI_API_KEYS", "").split(",")
-    if k.strip()
-]
+def _normalize_key_list(raw: Any) -> list[str]:
+    """Convert a CSV string or list into a clean key list."""
+    if isinstance(raw, list):
+        return [str(k).strip() for k in raw if str(k).strip()]
+    if isinstance(raw, str):
+        return [k.strip() for k in raw.split(",") if k.strip()]
+    return []
+
+_API_KEYS: list[str] = []
+
+# Preferred: comma-separated keys in .env
+_API_KEYS.extend(_normalize_key_list(os.environ.get("GEMINI_API_KEYS", "")))
+
+# Also support single-key .env for convenience
+if not _API_KEYS:
+    _API_KEYS.extend(_normalize_key_list(os.environ.get("GEMINI_API_KEY", "")))
+
+# Backward-compatible fallback from config.yaml (string or list)
+if not _API_KEYS:
+    _API_KEYS.extend(_normalize_key_list(_gemini_cfg.get("api_key", "")))
+
 _API_KEYS = list(dict.fromkeys(_API_KEYS))  # preserve order, remove duplicates
 
 GEMINI_MODEL: str            = _gemini_cfg.get("model", "gemini-3-flash-preview")
@@ -236,7 +252,7 @@ try:
     else:
         logger.warning(
             "InvisINK API key not set. "
-            "Set env var GEMINI_API_KEY or add gemini.api_key in config.yaml."
+            "Set env var GEMINI_API_KEYS / GEMINI_API_KEY in .env."
         )
 except ImportError:
     logger.warning(
@@ -421,7 +437,7 @@ def solve_with_gemini(canvas: np.ndarray) -> tuple[str, str]:
         return "", "Draw something first"
 
     if not _gemini_available:
-        return "", "InvisINK not available — check the connectivity"
+        return "", "Gemini API key missing/invalid — check .env"
 
     import google.generativeai as genai  # type: ignore
 
@@ -734,8 +750,8 @@ class InvisINKApiApp:
         logger.info("InvisINK Edition — System Online ✦")
         if not _gemini_available:
             logger.warning(
-                "No InvisINK key found. "
-                "Set InvisINK env variable or add to config.yaml."
+                "No Gemini key found. "
+                "Set GEMINI_API_KEYS / GEMINI_API_KEY in .env."
             )
 
     # ── gesture handlers ───────────────────────────────────────

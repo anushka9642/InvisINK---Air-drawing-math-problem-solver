@@ -74,16 +74,31 @@ cd InvisINK
 pip install -r requirements.txt
 ```
 
-### 3. Add your Gemini API key
+### 3. Add your Gemini API key (safe for GitHub)
 
-Open `config.yaml` and set your key:
+Copy `.env.example` to `.env`:
 
-```yaml
-gemini:
-  api_key: "YOUR_GEMINI_API_KEY_HERE"
+```bash
+# macOS / Linux
+cp .env.example .env
+
+# Windows (PowerShell)
+copy .env.example .env
 ```
 
-> 🔒 **Never commit your real API key.** Add `config.yaml` to `.gitignore` or use an environment variable.
+Then set your key in `.env`:
+
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
+```
+
+Or add multiple keys for auto-rotation:
+
+```env
+GEMINI_API_KEYS=key1,key2,key3
+```
+
+> 🔒 **Never commit your real API key.** `.env` is already ignored by `.gitignore`.
 
 ### 4. Run
 
@@ -103,7 +118,7 @@ All settings live in `config.yaml`. No code changes needed for common tweaks.
 |---|---|
 | `drawing` | `brush_thickness`, `eraser_radius`, `glow_blend_alpha` |
 | `mediapipe` | `max_hands`, `detection_confidence`, `tracking_confidence` |
-| `gemini` | `api_key`, `model`, `min_contour_area` |
+| `gemini` | `model`, `min_contour_area` |
 | `voice` | `enabled` (true/false), `rate` (words per minute) |
 | `colors` | HUD colors in BGR format (`neon_draw`, `accent_cyan`, `success`, etc.) |
 | `history` | `max_display` (entries shown on HUD), `file` (JSON path) |
@@ -183,9 +198,10 @@ canvas_to_png_bytes()  →  Gemini Vision AI
 
 ## 🔐 API Key Safety
 
-- Keep your Gemini key in `config.yaml` locally — **do not push it to GitHub**
-- The `.gitignore` excludes `config.yaml` and `.env` files by default
-- InvisINK supports **multiple API keys** with automatic rotation on quota errors — add them as a list under `gemini.api_key`
+- Store Gemini keys in `.env` only — **do not push secrets to GitHub**
+- The `.gitignore` excludes `.env` files by default
+- Use `.env.example` as your shareable template (safe to commit)
+- InvisINK supports **multiple API keys** with automatic rotation using `GEMINI_API_KEYS=key1,key2,key3`
 
 ---
 
