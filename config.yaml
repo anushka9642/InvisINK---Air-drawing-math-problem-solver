@@ -1,0 +1,122 @@
+# ═══════════════════════════════════════════════════════════════════
+#  InvisINK Configuration
+# ═══════════════════════════════════════════════════════════════════
+
+# -- Drawing -------------------------------------------------------
+drawing:
+  brush_thickness: 14
+  eraser_radius: 28
+  glow_blur_kernel: [19, 19]
+  glow_blend_alpha: 0.55
+
+# -- Recognition thresholds ----------------------------------------
+recognition:
+  min_contour_w: 10
+  min_contour_h: 8
+  row_group_threshold: 80
+  equals_merge_y_dist: 55
+  equals_overlap_ratio: 0.35
+  equals_aspect_ratio: 1.2
+  confidence_threshold_equals: 0.80
+  confidence_threshold_correction: 0.70
+
+# -- Solve flash animation -----------------------------------------
+solve_flash:
+  frames: 14
+  max_alpha: 0.28
+  brightness: 240
+
+# -- UI layout -----------------------------------------------------
+ui:
+  top_panel_height: 110
+  bottom_bar_height: 54
+  badge_rect: [16, 12, 176, 52]
+  max_expr_chars: 72
+  max_sol_chars: 68
+  camera_blend_alpha: 0.35     # how much camera shows through drawing overlay
+
+# -- MediaPipe -----------------------------------------------------
+mediapipe:
+  max_hands: 2
+  detection_confidence: 0.80
+  tracking_confidence: 0.70
+
+# -- FPS -----------------------------------------------------------
+fps:
+  smoothing: 0.9
+  initial: 30.0
+
+# -- History -------------------------------------------------------
+history:
+  max_display: 5               # how many entries shown on HUD
+  file: "history.json"
+
+# -- Export --------------------------------------------------------
+export:
+  directory: "exports"
+
+# -- Voice ---------------------------------------------------------
+voice:
+  enabled: true
+  rate: 160                    # speech rate (words per minute)
+
+# -- Colors (BGR format) ------------------------------------------
+colors:
+  neon_draw:    [0, 240, 160]
+  neon_glow:    [0, 200, 120]
+  accent_cyan:  [255, 220, 0]
+  accent_gold:  [0, 200, 255]
+  success:      [80, 220, 100]
+  text_dim:     [130, 130, 160]
+  danger:       [80, 80, 240]
+  erase:        [180, 100, 255]
+  overlay_dark: [8, 8, 14]
+
+mode_colors:
+  DRAW:  [0, 240, 160]
+  ERASE: [180, 100, 255]
+  SOLVE: [0, 200, 255]
+  CLEAR: [80, 80, 240]
+  IDLE:  [130, 130, 160]
+
+# -- Character correction map -------------------------------------
+char_corrections:
+  z: "x"
+  Z: "x"
+  l: "1"
+  O: "0"
+  o: "0"
+  I: "1"
+  S: "5"
+  s: "5"
+  B: "8"
+  b: "6"
+  G: "6"
+  g: "9"
+  D: "0"
+  q: "9"
+  Q: "9"
+  t: "+"
+  T: "+"
+  A: "4"
+  a: "4"
+  C: "("
+  c: "("
+  U: "0"
+  u: "0"
+  n: "x"
+  m: "x"
+  e: "="
+  E: "="
+  P: "+"
+  p: "+"
+  r: "x"
+  R: "x"
+  v: "x"
+  V: "x"
+
+
+gemini:
+  api_key: " "  # Gemini API key
+  model: "gemini-3-flash-preview"
+  min_contour_area: 50     # pixels — skip solve if canvas has fewer lit pixels
